@@ -8,7 +8,7 @@
 [![forthebadge](https://forthebadge.com/images/badges/uses-git.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
-> This app allows the user to post pictures, like and commenr on posts and also follow other users of the app.
+> This app allows the user to post pictures, like and comment on posts and also follow other users of the app.
 
 ##  Starting the Project
 
