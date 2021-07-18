@@ -1,0 +1,73 @@
+{% extends "base.html" %} {% block content %}{% load static %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+    body {
+        margin: 0;
+        background-image: url({% static 'pics/col.png'%});
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+    }
+    
+    #explore {
+        border: 7px solid;
+        border-image: linear-gradient(50deg, #00b3b3, #006666);
+        border-image-slice: 5;
+        margin: 20px 10px 10px 10px;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .picture-square {
+        border-radius: 25px;
+        transition: transform .2s;
+    }
+    
+    .picture-square:hover {
+        border-radius: 25px;
+        -ms-transform: scale(1.5);
+        -webkit-transform: scale(1.5);
+        transform: scale(1.1);
+    }
+    
+    .textbox {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .textbox h1 {
+        font-size: 60px;
+        font-family: 'Audiowide', cursive;
+        background: -webkit-radial-gradient(#006666, #003333);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .colorline {
+        border-top: 5px solid #006666;
+        width: 120px;
+        margin-left: calc(50% - 60px);
+        margin-top: -2px;
+    }
+</style>
+<div class="textbox">
+    <h1>Recent Posts</h1>
+</div>
+<div class="colorline"></div>
+<div class="row" id="explore">
+    {% for post in object_list %}
+    <div class="col-xs-4 col-sm-2" style="margin: 30px 30px 40px 30px;">
+        <div class="picture-square" style="background-image: url(http://{{request.META.HTTP_HOST}}/{{post.image.url}}); background-size:cover;">
+            <a href="{% url 'post_detail' post.pk %}">
+                <div class="content" style="border-radius: 25px;">
+                    <i class="fa fa-heart" aria-hidden="true"></i> {{ post.get_like_count }}<br>
+                    <i class="fa fa-user" aria-hidden="true"></i> {{ post.author.username}}
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<br> {% endblock %}

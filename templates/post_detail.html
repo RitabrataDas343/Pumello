@@ -1,0 +1,190 @@
+{% extends 'base.html' %} {% load custom_tags %} {% block content %}{% load static %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url({% static 'pics/col.png'%});
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+        overflow: auto;
+    }
+    
+    .container {
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, .6);
+        box-shadow: 0 0 .25em rgba(0, 0, 0, .25);
+        box-sizing: border-box;
+        left: 50%;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        padding-right: 50px;
+        padding-left: 50px;
+        position: fixed;
+        text-align: center;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 25px;
+        width: 60%;
+    }
+    
+    .title {
+        background-color: #006666;
+        color: aqua;
+        font-size: 15px;
+        font-family: 'Poppins', sans-serif;
+        padding: 10px;
+        border: 0.2px dotted aqua;
+        margin-bottom: 20px;
+    }
+    
+    .title p {
+        text-align: left;
+    }
+    
+    .posty {
+        background-color: #006666;
+        padding: 40px;
+    }
+    
+    .poster__timestamp {
+        margin-left: 80px;
+        margin-right: 5px;
+        color: aqua;
+        float: right;
+        font-size: 12px;
+    }
+    
+    .poster__author {
+        margin-left: 5px;
+        margin-right: 5px;
+        color: aqua;
+        font-weight: 800;
+        font-family: 'Poppins', sans-serif;
+        font-size: 20px;
+    }
+    
+    .comments-portion {
+        height: 60%;
+        overflow-y: auto;
+        background-color: #99ffff;
+        color: #006666;
+        font-weight: 400;
+        font-size: 15px;
+        margin-right: -20px;
+        margin-bottom: 70px;
+        text-align: left;
+        border: 2px ridge aqua;
+        border-radius: 15px;
+    }
+    
+    .comments-portion a.user {
+        color: black;
+    }
+    
+    .header {
+        margin-right: -20px;
+    }
+    
+    .input-row .submit-like.fa-heartbeat {
+        color: rgba(0, 0, 0, .6);
+    }
+    
+    .input-row {
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .likes {
+        width: 40px;
+        color: aqua;
+        margin-right: 4px;
+        margin-left: 4px;
+    }
+    
+    .comments-portion::-webkit-scrollbar {
+        height: 2px;
+        width: 4px;
+    }
+    
+    .add-comment {
+        background-color: #99ffff;
+        color: #006666;
+        border-radius: 25px;
+        text-indent: 5px;
+    }
+    
+    .comments-portion::-webkit-scrollbar-thumb {
+        background: #006666;
+        border-radius: 10px;
+    }
+</style>
+<div class="container">
+    <div class="row single-post posty">
+        <div class="single-post-card view-update {{ object.pk }}">
+            <div class="header">
+                <a href="{% url 'user_detail' object.author.pk %}">
+                {% if object.author.profile_pic %}
+                    <img class="picture-circle--medium" src="/{{ object.author.profile_pic }}"></a> {% else %}
+                <img class="picture-circle--medium" src="{% static 'pics/default.png' %}"></a>
+                {% endif %}
+                <span class="poster__author">
+                {{ object.author.username }}
+                </span>
+                <span class="poster__timestamp">
+                    {{ post.posted_on|timesince }}
+                </span>
+                </a>
+            </div>
+            <div class="title">
+                <p><strong style="font-size: 20px;">Title: </strong>{{ post.title }}</p>
+            </div>
+            <div class="image__wrapper">
+                <img class="card__main-image" src="/{{object.image}}" width="1000" , height="1000">
+            </div>
+            <div class="comments-portion">
+                <ul class="comment-list">
+                    {% for comment in object.comments.all %}
+                    <li class="comment-list__comment">
+                        <a href="{% url 'user_detail' comment.user.pk %}" style="text-align: left;" class="user">
+                            {{ comment.user.username }}
+                        </a>
+                        <span class="comment">{{ comment.comment }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <section class="input-row">
+                <i class="fa {% has_user_liked_post post user %} submit-like" onClick="refreshPage()" aria-hidden="true"></i>
+                <div class="likes" style="margin-left: -10px;">
+                    {% if object.get_like_count %} <span style="font-weight: 400;">{{ object.get_like_count }} like{% if object.get_like_count > 1%}s{% endif %}</span> {% else %} 0 likes {% endif %}
+                </div>
+                <div class="comment-input-wrapper">
+                    <input class="add-comment" type="text" placeholder="Add a comment...">
+                </div>
+                <div class="hidden-data {{ object.pk }}" style="display: none;">
+                    <span class="post-pk">{{ object.pk }}</span>
+                </div>
+                <div class="d-inline">
+                    {% if request.user == object.author %}
+                    <a href="{% url 'post_delete' object.pk %}">Delete</a>
+                    <a href="{% url 'post_update' object.pk %}">Update</a> {% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+    function refreshPage() {
+        window.location.reload();
+    }
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
+
+{% endblock content %}

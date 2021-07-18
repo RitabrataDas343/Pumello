@@ -1,0 +1,249 @@
+{% extends 'base.html' %} {% block content %}{% load static %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Pattaya&display=swap');
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 90%;
+        background-image: url({% static 'pics/col.png'%});
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+    }
+    
+    .container {
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+        min-height: 100%;
+    }
+    
+    .user_card {
+        width: 60rem;
+        height: 60rem;
+        margin-top: auto;
+        margin-bottom: auto;
+        background: #006666;
+        border: 0.2px solid black;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 20px;
+    }
+    
+    .form_container {
+        margin-top: 20px;
+    }
+    
+    #form-title {
+        color: aqua;
+        font-size: medium;
+        letter-spacing: 2px;
+        position: relative;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        opacity: 1;
+        text-shadow: 2px 2px #99ffff;
+    }
+    
+    .login_btn {
+        width: 50%;
+        height: 40px;
+        background: aqua;
+        color: black;
+    }
+    
+    .login_btn:focus {
+        box-shadow: none;
+        outline: 0px;
+    }
+    
+    .login_container {
+        padding: 0 2rem;
+    }
+    
+    .input-group-text {
+        background: aqua !important;
+        color: black !important;
+        border: 0 !important;
+        border-radius: 0.25rem 0 0 0.25rem !important;
+        width: 45px;
+        height: 45px;
+    }
+    
+    .input_user,
+    .input_pass:focus {
+        box-shadow: none !important;
+        outline: 0px !important;
+    }
+    
+    #messages {
+        background-color: grey;
+        color: #fff;
+        padding: 10px;
+        margin-top: 10px;
+    }
+    
+    h1 {
+        color: #fff;
+        font-size: 120px;
+        font-weight: 700;
+        font-family: 'Pattaya', sans-serif;
+        background: linear-gradient(to right, #006666 25%, #009999 75%);
+        background-size: auto auto;
+        background-clip: border-box;
+        background-size: 200% auto;
+        color: #fff;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: textclip 1.5s linear infinite;
+        display: inline-block;
+    }
+    
+    @keyframes textclip {
+        to {
+            background-position: 200% center;
+        }
+    }
+    
+    @import url(https://fonts.googleapis.com/css?family=Khula:700);
+    .hidden {
+        opacity: 0;
+    }
+    
+    .console-container {
+        font-family: Khula;
+        font-size: 40px;
+        text-align: center;
+        height: 80px;
+        display: inline-block;
+        position: relative;
+        color: white;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+    
+    .console-underscore {
+        display: inline-block;
+        position: relative;
+    }
+</style>
+<div class="col-sm-3 col-md-6 justify-content-center" align="center" style="height: 100%;">
+    <div class="well" style="background: transparent; border: 0;">
+        <img src="{% static 'pics/ssss.png' %}" style="width:400px; height:400px; margin-top:20px;">
+    </div>
+    <br>
+    <div class="well" style="background: transparent; border: 0; padding: 20px ;">
+        <h1>Pumello</h1><br>
+        <div class="console-container"><span id='text'></span><span style="color: white">&#95;</span>
+        </div>
+    </div>
+</div>
+<div class="col-sm-9 col-md-6 justify-content-center" align="center" style="height: 100%;">
+    <div class="container d-flex justify-content-center">
+        <div class="d-flex justify-content-center h-150">
+            <div class="user_card">
+                <div class="d-flex justify-content-center">
+                    <h2 id="form-title" style="font-size: 40px;">LOGIN</h2>
+                </div>
+                <div class="d-flex justify-content-center form_container">
+                    <form method="POST" action="">
+                        {% csrf_token %} {% if form.errors %} {% for field in form %} {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong style="font-size: 10px;">{{ error|escape }}</strong>
+                        </div>
+                        {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <strong style="font-size: 10px;">{{ error|escape }}</strong>
+                        </div>
+                        {% endfor %} {% endif %}
+                        <div class="input-group mb-2">
+                            <div class="input-group-append justify-content-center" align="center">
+                                <span class="input-group-text"><i class="fas fa-3x fa-user"></i></span>
+                            </div>
+                            <input type="text" name="username" placeholder="Username..." class="form-control" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" style="width: 350px; height: 45px; font-size: 20px;">
+                        </div>
+                        <br>
+                        <div class="input-group mb-2">
+                            <div class="input-group-append justify-content-center">
+                                <span class="input-group-text"><i class="fas fa-3x fa-key"></i></span>
+                            </div>
+                            <input type="password" name="password" placeholder="Password..." class="form-control" autocomplete="current-password" required id="id_password" style="width: 350px; height: 45px; font-size: 20px;">
+                        </div>
+                        <br>
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <input class="btn login_btn" type="submit" value="Login" style="font-size: 20px;">
+                        </div>
+                    </form>
+                </div>
+                <br>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-center links">
+                        <h3 style="font-size: 30px; color: white;"> Don't have an account? </h3> <a href="{% url 'signup' %}" class="ml-2" style="color: aqua; font-size: 25px;">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    consoleText(['Socializing Life', 'Made with Love', 'by Ritabrata'], 'text', ['black', 'black', 'black']);
+
+    function consoleText(words, id, colors) {
+        if (colors === undefined) colors = ['#fff'];
+        var visible = true;
+        var con = document.getElementById('console');
+        var letterCount = 1;
+        var x = 1;
+        var waiting = false;
+        var target = document.getElementById(id)
+        target.setAttribute('style', 'color:' + colors[0])
+        window.setInterval(function() {
+
+            if (letterCount === 0 && waiting === false) {
+                waiting = true;
+                target.innerHTML = words[0].substring(0, letterCount)
+                window.setTimeout(function() {
+                    var usedColor = colors.shift();
+                    colors.push(usedColor);
+                    var usedWord = words.shift();
+                    words.push(usedWord);
+                    x = 1;
+                    target.setAttribute('style', 'color:' + colors[0])
+                    letterCount += x;
+                    waiting = false;
+                }, 1000)
+            } else if (letterCount === words[0].length + 1 && waiting === false) {
+                waiting = true;
+                window.setTimeout(function() {
+                    x = -1;
+                    letterCount += x;
+                    waiting = false;
+                }, 1000)
+            } else if (waiting === false) {
+                target.innerHTML = words[0].substring(0, letterCount)
+                letterCount += x;
+            }
+        }, 120)
+        window.setInterval(function() {
+            if (visible === true) {
+                con.className = 'console-underscore hidden'
+                visible = false;
+            } else {
+                con.className = 'console-underscore'
+                visible = true;
+            }
+        }, 400)
+    }
+</script>
+{% endblock content %}

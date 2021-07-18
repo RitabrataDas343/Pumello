@@ -1,0 +1,223 @@
+{% extends 'base.html' %} {% load custom_tags %} {% block content %} {% load static %}
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+    body {
+        margin: 0;
+        padding: 0;
+        background-image: url({% static 'pics/col.png'%});
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+    }
+    
+    .profile {
+        background-image: linear-gradient(145deg, #006666 0%, #009999 100%);
+        margin-top: 20px;
+        border-radius: 50px;
+        padding-bottom: 30px;
+        margin-bottom: 10px;
+        border: 0.2px solid;
+        border-color: rgb(0, 140, 255);
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    
+    .picture-circle {
+        margin-left: 80px;
+        margin-top: 20px;
+        border: 2px dotted #4dffff;
+    }
+    
+    .username {
+        font-family: 'Poppins', sans-serif;
+        font-size: 3.5rem;
+        color: #80ffff;
+        transition: transform .2s;
+    }
+    
+    .username:hover {
+        transform: scale(1.2);
+    }
+    
+    .name-button {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        height: 100px;
+        padding: 10px;
+    }
+    
+    .edit-profile {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    
+    .follow-user {
+        padding: 5px;
+        width: 150px;
+        border: 2px solid #4dffff;
+        font-size: 2rem;
+        color: #4dffff;
+        background: blue;
+        margin-top: 0;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    
+    .unfollow-user {
+        padding: 5px;
+        width: 150px;
+        border: 2px solid #4dffff;
+        font-size: 2rem;
+        color: #4dffff;
+        background: transparent;
+        margin-top: 0;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    
+    .picture-square {
+        border-radius: 25px;
+        height: 200px;
+        width: 200px;
+    }
+    
+    .textbox {
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .textbox h1 {
+        font-size: 40px;
+        font-family: 'Audiowide', cursive;
+        background: -webkit-radial-gradient(#4dffff, #00cccc);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .textbox h2 a {
+        font-size: 20px;
+        font-family: 'Audiowide', cursive;
+        color: white;
+    }
+    
+    .colorline {
+        border-top: 5px solid #4dffff;
+        width: 80px;
+        margin-left: calc(50% - 40px);
+        margin-top: -2px;
+    }
+    
+    #postbox {
+        border: 7px solid;
+        border-image: linear-gradient(50deg, #4dffff, #00cccc);
+        border-image-slice: 5;
+        margin: 20px 10px 10px 10px;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .no-data {
+        padding: 120px;
+    }
+</style>
+
+
+<div class="profile">
+    <div class="profile__head">
+        <div class="row">
+            <div class="col-xs-4 left">
+                {% if object.profile_pic %}
+                <img class="picture-circle img-responsive" src="/{{ object.profile_pic }}"> {% else %}
+                <img class="picture-circle img-responsive" src="{% static 'pics/default.png' %}"> {% endif %}
+            </div>
+            <div class="col-xs-8 right" style="margin-top: 10px;">
+                <div class="name-button">
+                    <h1 class="username">{{ object.username }}</h1>
+                    {% if user == object %}
+                    <div class="follow-toggle__container" style="float: right; margin-top: 0; margin-right: 200px; padding-left: 50px;">
+                        <a class="edit-desktop" href="{% url 'edit_profile' object.pk %}">
+                            <button class="edit-profile" style="padding: 5px; width: 150px; border: 2px solid #4dffff; font-size: 2rem; color:#006666; background: #4dffff; margin-top: 0;">Edit Profile</button>
+                        </a>
+                    </div>
+                    {% else %} {% is_following user object as following %}{% csrf_token %}
+                    <div class="follow-toggle__container" style="float: right; margin-top: 0; margin-right: 200px; padding-left: 50px;">
+                        <button class="follow-btn {% if not following %}follow-user{% else %}unfollow-user{% endif %}" id="{{ object.pk }}" onClick="refreshPage()">
+                                {% if following %}
+                                    Unfollow
+                                {% else %}
+                                    Follow
+                                {% endif %}
+                            </button>
+                    </div>
+                    {% endif %}
+                </div>
+                <ul class="stats" style="margin-top: 10px; margin-left: -10px;">
+                    <div class="col-xs-4">
+                        <li class="status__count" style="font-family: 'Poppins', sans-serif; font-size: 2rem; color: white; padding-right: 10px;"><span>{{ object.my_posts.count }}</span><br>Posts</li>
+                    </div>
+                    <div class="col-xs-4">
+                        <a href="#" style="text-decoration: none;color: black;">
+                            <li class="status__count" style="font-family: 'Poppins', sans-serif; font-size: 2rem; color: white; padding-right: 10px;"><span class="follower_count" id="follower_id">{{ object.get_followers.count }}</span><br>Followers</li>
+                        </a>
+                    </div>
+                    <div class="col-xs-4">
+                        <a href="#" style="text-decoration: none;color: black;">
+                            <li class="status__count" style="font-family: 'Poppins', sans-serif; font-size: 2rem; color: white; padding-right: 10px;"><span>{{ object.get_connections.count }}</span><br>Following</li>
+                        </a>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <hr style="border-top: 2px solid #4dffff">
+    <div class="textbox">
+        <h1>Your Posts</h1>
+    </div>
+    <div class="colorline"></div>
+    <div class="profile__body" style="padding: 20px;">
+        <div class="row" id="postbox">
+            {% for post in object.my_posts.all %} {% if post %}
+            <div class="col-xs-3 col-sm-3" style="margin: 30px 30px 30px 30px;">
+                <div class="picture-square" style="background-image: url(http://{{request.META.HTTP_HOST}}/{{post.image.url}}); background-size: cover;">
+                    <a href="{% url 'post_detail' post.pk %}">
+                        <div class="content" style="border-radius: 25px;">
+                            <i class="fa fa-heart" aria-hidden="true"></i> {{ post.get_like_count }}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endif %} {% endfor %}
+            <!-- <div class="no-data textbox">
+                <h1>Make your first post!!</h1>
+                <h2><a href="{% url 'make_post' %}">Click here</a></h2>
+            </div> -->
+        </div>
+    </div>
+</div>
+<br>
+<script>
+    function refreshPage() {
+        window.location.reload();
+    }
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
+
+
+
+{% endblock content %}
