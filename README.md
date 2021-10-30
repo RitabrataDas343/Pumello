@@ -68,6 +68,6 @@ This app uses the following technologies:
 
 ## For contributors
 
-If you want to contribute to this project, then you are very much welcome.
+If you want to contribute to this project, then you are very much welcome. Thank you.
 
-I want to acknowledge the efforts of my seniors to encourage me for doing this project, and helped me make the app better and realistic.
+I want to acknowledge the efforts of my seniors to encourage me for doing this project, and helped me make the app better and realistic. 
