@@ -31,7 +31,7 @@
     ```
     source env/bin/activate
 
-    ```
+    ```Accept me pls.
     
 4. Install the requirements.
 
